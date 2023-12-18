@@ -27,8 +27,12 @@ function prompt {
 
   # Battery Percentage Warning
   $bat_per = (Get-CimInstance -ClassName Win32_Battery).EstimatedChargeRemaining
-  if ($bat_per -lt 30){
-    $prompt_ += "[🪫 $bat_per%]"
+  $bat_status = (Get-WmiObject -Class Win32_Battery).BatteryStatus
+
+  if ($bat_status -eq 2) {
+    $prompt_ += "[⚡$bat_per%]"
+  } elseif ($bat_per -lt 30){
+      $prompt_ += "[🪫 $bat_per%]"
   }
 
   $prompt_ += "# "
